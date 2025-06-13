@@ -19,11 +19,19 @@ O projeto inclui uma suite de testes unitários implementada com GTest, cobrindo
 - Máximo de 40 registros em memória simultaneamente (4 páginas × 10 registros)
 - Arquivos de entrada são tratados como somente leitura
 - Resultados intermediários são salvos em arquivos temporários
-
-2. Crie e entre no diretório de build:
+1. Clone o repositório
+2. Crie o diretorio build:
    ```bash
-   git clone [url-do-repositorio] cd Sort-Merge-Join```
+   mkdir build
+   ```
 3. Configure e compile o projeto:
     ```bash
    cmake -S . -B build 
+   cmake --build build
    ```
+4. Execute o programa
+   ```bash
+   ./build/Sort-Merge-Join 
+   ```
+5. Veja os resultados no diretorio data/
+   
