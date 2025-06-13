@@ -1,36 +1,29 @@
-1. Quantidade de IOs (vezes que leu uma pagina).
-2. Quantidade de paginas gravadas em disco. 
-3. Quantidade de tuplas geradas na juncao.
 
-Esses sao os dados por operacao
+## Contagem de I/O
+O sistema mantém um contador interno que registra:
+- Número de leituras de página
+- Número de escritas de página
+- Total de operações de I/O
 
-Pagina: 10 tuplas no max. Armazenadas em arquivos de texto (disco).
-4 paginas, no total, em memoria.
+Estas estatísticas são exibidas ao final da execução do programa.
 
-Classes: 
+## Testes
+O projeto inclui uma suite de testes unitários implementada com GTest, cobrindo:
+- Operações de parse de CSV
+- Gerenciamento de buffer
+- Operações de I/O
+- Funcionalidade de Join
 
-Tabela
+## Limitações e Considerações
+- O sistema trabalha apenas com joins de igualdade
+- Máximo de 40 registros em memória simultaneamente (4 páginas × 10 registros)
+- Arquivos de entrada são tratados como somente leitura
+- Resultados intermediários são salvos em arquivos temporários
 
-- pags: List<Pagina>
-- qtd_pags: int
-- qtd_cols: int
-
-Pagina
-
-- tuplas: Tupla[10]
-- qtd_tuplas_ocup: int
-
-Tupla
-
-- cols: String[qtd_cols]
-
-As juncos sao todas por igualdade. Para qualquer duas tabelas.
-
-
-How to build: 
-In the root directory, run the following commands:
-
-```bash
-cmake -S . -B build
-cmake --build build
-```
+2. Crie e entre no diretório de build:
+   ```bash
+   git clone [url-do-repositorio] cd Sort-Merge-Join```
+3. Configure e compile o projeto:
+    ```bash
+   cmake -S . -B build 
+   ```

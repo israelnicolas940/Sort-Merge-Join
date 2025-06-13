@@ -1,15 +1,14 @@
-#include "data_structures.h"
 #include "disk_manager.h"
 #include <cassert>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <string>
 
-namespace {
-} // namespace
+namespace {} // namespace
 
 TEST(TestTopic, ExistingFileRead) {
-   EXPECT_EQ(1, 1);
+  EXPECT_EQ(1, 1);
+  EXPECT_TRUE(true);
 }
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);

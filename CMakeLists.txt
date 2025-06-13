@@ -24,8 +24,10 @@ include_directories(src)
 # List of source files for the main executable
 set(SRC_LIB_FILES
     src/disk_manager.cpp
-    src/external_sort.cpp
-    src/sort_merge_join.cpp
+    src/join_operation.cpp
+    src/table.cpp
+    src/buffer_manager.cpp
+    src/parser.cpp
 )
 
 # Create the main executable
@@ -39,6 +41,7 @@ if (BUILD_TESTING)
 
     add_executable(test_sort_merge_join
         tests/test_sort_merge_join.cpp
+        tests/test_aux.cpp
         ${SRC_LIB_FILES}
     )
 

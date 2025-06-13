@@ -1,47 +1,45 @@
 #ifndef DISK_MANAGER_H
 #define DISK_MANAGER_H
 
-#include "data_structures.h"
-#include "schema.h"
+#include <atomic>
+#include <memory>
+#include <string>
+
+class Page;
 
 class DiskManager {
-public:
-    Table load_table_from_disk(const std::string &filename);
-
-    void save_table_to_disk(const Table &table, const std::string &filename);
-
-    int read_file(const std::string &filename,
-                std::vector<std::vector<std::string>> &rows, int &total_rows);
-
-    std::vector<Page> load_pages_from_disk(const std::string &filename,
-                                        int page_num, int num_columns,
-                                        int &total_pages);
-
-    std::vector<Page> load_pages_from_disk(const std::string &filename,
-                                        int page_num,
-                                        std::vector<std::string> schema,
-                                        int &total_pages);
-
-    Page load_page_from_disk(const std::string &filename, int page_num,
-                            int num_columns);
-
-    Page load_page_from_disk(const std::string &filename, int page_num,
-                            std::vector<std::string> schema);
-
-    void save_page_to_disk(const std::string &filename, int page_num,
-                        const Page &page);
-
-    void save_pages_to_disk(const std::string &filename, int page_num,
-                            const std::vector<Page> &pages);
-
-    Table create_merged_table(const Table &left_table, const Table &right_table);
-
 private:
-    void load_from_disk(const std::string &filename, Table &table);
+  std::string data_directory;
+  static std::atomic<int> in_io_count;
+  static std::atomic<int> out_io_count;
 
-    void save_to_disk(const std::string &filename, const Table &table);
-    void initialize_table(Table &table, const std::string &filename);
-    void clear_table(Table &table);
+  std::string get_table_filename(const std::string &table_name);
+
+public:
+  DiskManager(const std::string &data_dir = "data/");
+
+  std::shared_ptr<Page> read_page(const std::string &table_name, int page_id);
+  void write_page(const std::string &table_name, std::shared_ptr<Page> page);
+
+  bool table_file_exists(const std::string &table_name);
+  void create_table_file(const std::string &table_name);
+  int get_total_pages(const std::string &table_name);
+
+  // I/O operation counters for monitoring purposes
+  static int get_in_io_count() { return in_io_count.load(); }
+  static void reset_in_io_count() { in_io_count.store(0); }
+  static void increment_in_io_count() { in_io_count.fetch_add(1); }
+
+  static int get_out_io_count() { return out_io_count.load(); }
+  static void reset_out_io_count() { out_io_count.store(0); }
+  static void increment_out_io_count() { out_io_count.fetch_add(1); }
+
+  static void reset_io_count() {
+    reset_in_io_count();
+    reset_out_io_count();
+  }
+  // Utility functions
+  void ensure_data_directory();
 };
 
-#endif
+#endif // DISK_MANAGER_H
